@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#190d1c">
+<meta name="description" content="A birthday surprise for Darla.">
+<title>Happy Birthday Darla</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 88C14 62 6 36 22 22c11-9 24-4 28 8 4-12 17-17 28-8 16 14 8 40-28 66z' fill='%23ff5d7a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Sans:wght@400;500;700&family=Young+Serif&display=swap">
+<style>
+  /* Layout: one left-aligned column over a night sky of drifting hearts; two views (wish, then the question). */
+  :root {
+    --bg: #190d1c;
+    --bg-glow: #3a1638;
+    --fg: #fbe9ee;
+    --muted: #d9aebd;
+    --rose: #ff5d7a;
+    --gold: #f6c177;
+    --ink-on-rose: #2a0b16;
+    --line: rgba(251, 233, 238, 0.22);
+    --font-display: "Young Serif", Georgia, "Times New Roman", serif;
+    --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  [hidden] { display: none !important; }
+
+  html, body { min-height: 100%; }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(60rem 40rem at 85% -10%, var(--bg-glow), transparent 65%),
+      radial-gradient(40rem 30rem at 0% 110%, #2b1030, transparent 70%);
+    background-attachment: fixed;
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    padding-block: 2rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  #sky {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .view {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 34rem;
+    min-width: 0;
+    animation: arrive 0.8s ease both;
+  }
+
+  @keyframes arrive {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .eyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 11vw, 4.4rem);
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  h1 .name {
+    display: block;
+    color: var(--rose);
+    font-style: italic;
+  }
+
+  .note {
+    margin: 1.75rem 0 0;
+    display: grid;
+    gap: 1rem;
+    color: var(--muted);
+    max-width: 65ch;
+  }
+
+  .note p { margin: 0; }
+
+  .love {
+    margin: 2rem 0 0;
+    font-family: var(--font-hand);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 9vw, 3.3rem);
+    line-height: 1.1;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+
+  .love span { color: var(--rose); }
+
+  .btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    background: var(--rose);
+    color: var(--ink-on-rose);
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  .btn:hover { filter: brightness(1.08); }
+  .btn:active { transform: scale(0.97); }
+
+  .btn:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--fg);
+    box-shadow: inset 0 0 0 1.5px var(--line);
+  }
+
+  .next { margin-top: 2.25rem; }
+
+  .question {
+    margin: 0;
+  }
+
+  .choices {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    min-height: 4rem;
+  }
+
+  #yes {
+    transform: scale(var(--grow, 1));
+    transform-origin: left center;
+    transition: transform 0.35s ease;
+    font-size: 1.1rem;
+    padding: 1rem 2.2rem;
+    margin-right: calc((var(--grow, 1) - 1) * 4rem);
+  }
+
+  #no.loose {
+    position: fixed;
+    z-index: 5;
+    transition: left 0.28s ease, top 0.28s ease;
+  }
+
+  .hint {
+    margin: 1.5rem 0 0;
+    min-height: 1.6em;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .answer p.big {
+    margin: 1.5rem 0 0;
+    font-family: var(--font-hand);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 9vw, 3.3rem);
+    line-height: 1.1;
+  }
+
+  .answer p.big span { color: var(--rose); }
+
+  .answer .note { margin-top: 1.25rem; }
+
+  .actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .view { animation: none; }
+    #yes, #no.loose { transition: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main id="wish" class="view" aria-labelledby="wish-title">
+  <p class="eyebrow">A little gift, just for you</p>
+  <h1 id="wish-title" tabindex="-1">Happy Birthday,
+    <span class="name her-name">My Love</span>
+  </h1>
+  <div class="note">
+    <p>Today the world gets to celebrate the best thing in it, and that is you.</p>
+    <p>Thank you for every smile, every laugh, and every ordinary day you turned into something special. I am so lucky it is you.</p>
+  </div>
+  <p class="love">I love you <span>so very much.</span></p>
+  <div class="next">
+    <button class="btn" id="to-ask" type="button">One more thing</button>
+  </div>
+</main>
+
+<main id="ask" class="view" aria-labelledby="ask-title" hidden>
+  <div id="question-block">
+    <p class="eyebrow">One question</p>
+    <h1 class="question" id="ask-title" tabindex="-1">Do you love me?</h1>
+    <div class="choices" id="choices">
+      <button class="btn" id="yes" type="button">Yes</button>
+      <button class="btn ghost" id="no" type="button">No</button>
+    </div>
+    <p class="hint" id="hint" aria-live="polite">Be honest.</p>
+  </div>
+
+  <div class="answer" id="answer" hidden>
+    <p class="eyebrow">I knew it</p>
+    <h1 id="answer-title" tabindex="-1">Happy Birthday, <span class="name her-name">My Love</span></h1>
+    <p class="big">I love you <span>so very much.</span> Muahhhh muahhh muahhhh</p>
+    <div class="note">
+      <p>Thank you for saying yes to me, today and every day. Here is to this year, and to every year after it.</p>
+    </div>
+    <div class="actions">
+      <button class="btn" id="to-marry" type="button">One more question</button>
+      <button class="btn ghost" id="replay" type="button">Read it again</button>
+    </div>
+  </div>
+</main>
+
+<main id="marry" class="view" aria-labelledby="marry-title" hidden>
+  <div id="marry-question">
+    <p class="eyebrow">The last question</p>
+    <h1 class="question" id="marry-title" tabindex="-1">Will you marry me?</h1>
+    <div class="choices" id="marry-choices">
+      <button class="btn" id="yes2" type="button">Yes</button>
+      <button class="btn ghost" id="no2" type="button">No</button>
+    </div>
+    <p class="hint" id="hint2" aria-live="polite">Take a deep breath.</p>
+  </div>
+
+  <div class="answer" id="marry-answer" hidden>
+    <p class="eyebrow">She said yes</p>
+    <h1 id="marry-answer-title" tabindex="-1">Forever starts today, <span class="name her-name">My Love</span></h1>
+    <p class="big">I love you <span>so very much.</span></p>
+    <div class="note">
+      <p>I promise to make you smile every single day, and to keep choosing you every single day. Happy Birthday, my love.</p>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="restart" type="button">Start again</button>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  // Put her name here, for example: "Priya". Leave empty to show "My Love".
+  var HER_NAME = "Darla";
+  if (HER_NAME) {
+    document.querySelectorAll(".her-name").forEach(function (el) { el.textContent = HER_NAME; });
+    document.title = "Happy Birthday " + HER_NAME;
+  }
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- views ---------- */
+  var views = {
+    wish: document.getElementById("wish"),
+    ask: document.getElementById("ask"),
+    marry: document.getElementById("marry")
+  };
+
+  function show(name, focus) {
+    Object.keys(views).forEach(function (k) { views[k].hidden = k !== name; });
+    var target = document.getElementById(name + "-title");
+    if (focus && target) { try { target.focus({ preventScroll: true }); } catch (e) {} }
+    window.scrollTo(0, 0);
+  }
+
+  function route(focus) {
+    var name = location.hash.replace("#", "");
+    show(views[name] ? name : "wish", focus);
+  }
+
+  document.getElementById("to-ask").addEventListener("click", function () {
+    location.hash = "ask";
+  });
+  document.getElementById("to-marry").addEventListener("click", function () {
+    location.hash = "marry";
+  });
+  window.addEventListener("hashchange", function () { route(true); });
+  route(false);
+
+  /* ---------- floating hearts and confetti ---------- */
+  var canvas = document.getElementById("sky");
+  var ctx = canvas.getContext("2d");
+  var W = 0, H = 0;
+  var css = getComputedStyle(document.documentElement);
+  var palette = [
+    css.getPropertyValue("--rose").trim() || "#ff5d7a",
+    css.getPropertyValue("--gold").trim() || "#f6c177",
+    "#ffb3c1",
+    "#ff8fa6"
+  ];
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener("resize", function () { resize(); if (reduce) drawStatic(); });
+
+  function heart(x, y, s, rot, color, alpha) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.scale(s, s);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0, 0.9);
+    ctx.bezierCurveTo(-1.2, 0.1, -0.9, -0.9, 0, -0.35);
+    ctx.bezierCurveTo(0.9, -0.9, 1.2, 0.1, 0, 0.9);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  var count = W < 600 ? 28 : 48;
+  var floaters = [];
+  for (var i = 0; i < count; i++) {
+    floaters.push({
+      x: rand(0, W), y: rand(0, H),
+      s: rand(5, 15), vy: rand(0.2, 0.6),
+      phase: rand(0, 6.28), sway: rand(0.2, 0.8),
+      rot: rand(-0.5, 0.5), a: rand(0.12, 0.38),
+      c: palette[Math.floor(rand(0, palette.length))]
+    });
+  }
+
+  var burst = [];
+
+  function drawStatic() {
+    ctx.clearRect(0, 0, W, H);
+    floaters.forEach(function (f) { heart(f.x, f.y, f.s, f.rot, f.c, f.a); });
+  }
+
+  function tick(t) {
+    ctx.clearRect(0, 0, W, H);
+    floaters.forEach(function (f) {
+      f.y -= f.vy;
+      f.x += Math.sin(t / 1400 + f.phase) * f.sway * 0.4;
+      if (f.y < -30) { f.y = H + 30; f.x = rand(0, W); }
+      heart(f.x, f.y, f.s, f.rot + Math.sin(t / 2000 + f.phase) * 0.2, f.c, f.a);
+    });
+    burst = burst.filter(function (p) { return p.life > 0; });
+    burst.forEach(function (p) {
+      p.vy += 0.14;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life -= 1;
+      heart(p.x, p.y, p.s, p.rot, p.c, Math.max(0, Math.min(1, p.life / 40)));
+    });
+    requestAnimationFrame(tick);
+  }
+
+  if (reduce) { drawStatic(); } else { requestAnimationFrame(tick); }
+
+  function celebrate(cx, cy) {
+    if (reduce) return;
+    for (var i = 0; i < 90; i++) {
+      var ang = rand(0, Math.PI * 2);
+      var sp = rand(3, 10);
+      burst.push({
+        x: cx, y: cy,
+        vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 4,
+        s: rand(6, 16), rot: rand(0, 6.28), vr: rand(-0.1, 0.1),
+        life: rand(70, 130),
+        c: palette[Math.floor(rand(0, palette.length))]
+      });
+    }
+  }
+
+  /* ---------- the questions ---------- */
+  function overlaps(a, b) {
+    return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+  }
+
+  function question(cfg) {
+    var yes = document.getElementById(cfg.yes);
+    var no = document.getElementById(cfg.no);
+    var hint = document.getElementById(cfg.hint);
+    var choices = document.getElementById(cfg.choices);
+    var qBlock = document.getElementById(cfg.question);
+    var aBlock = document.getElementById(cfg.answer);
+    var aTitle = document.getElementById(cfg.answerTitle);
+    var ghost = null;
+    var dodges = 0;
+
+    function dodge(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var r = no.getBoundingClientRect();
+      if (!no.classList.contains("loose")) {
+        ghost = document.createElement("span");
+        ghost.style.width = r.width + "px";
+        ghost.style.height = r.height + "px";
+        ghost.setAttribute("aria-hidden", "true");
+        choices.appendChild(ghost);
+        no.style.left = r.left + "px";
+        no.style.top = r.top + "px";
+        no.classList.add("loose");
+        void no.offsetWidth;
+      }
+      dodges += 1;
+
+      var w = no.offsetWidth, h = no.offsetHeight, m = 16;
+      var yr = yes.getBoundingClientRect();
+      var pad = 24;
+      var left = m, top = m;
+      for (var i = 0; i < 20; i++) {
+        left = rand(m, Math.max(m, W - w - m));
+        top = rand(m, Math.max(m, H - h - m));
+        var box = { left: left, top: top, right: left + w, bottom: top + h };
+        var avoid = { left: yr.left - pad, top: yr.top - pad, right: yr.right + pad, bottom: yr.bottom + pad };
+        if (!overlaps(box, avoid)) break;
+      }
+      no.style.left = left + "px";
+      no.style.top = top + "px";
+
+      yes.style.setProperty("--grow", Math.min(1 + dodges * 0.1, 1.6).toFixed(2));
+      hint.textContent = cfg.lines[Math.min(dodges - 1, cfg.lines.length - 1)];
+    }
+
+    ["pointerenter", "pointerdown", "focus", "click"].forEach(function (ev) {
+      no.addEventListener(ev, dodge);
+    });
+
+    yes.addEventListener("click", function () {
+      var r = yes.getBoundingClientRect();
+      celebrate(r.left + r.width / 2, r.top + r.height / 2);
+      no.hidden = true;
+      if (ghost) { ghost.remove(); ghost = null; }
+      qBlock.hidden = true;
+      aBlock.hidden = false;
+      try { aTitle.focus({ preventScroll: true }); } catch (e) {}
+      window.scrollTo(0, 0);
+      setTimeout(function () { celebrate(W * 0.25, H * 0.35); }, 350);
+      setTimeout(function () { celebrate(W * 0.75, H * 0.3); }, 650);
+    });
+
+    return {
+      reset: function () {
+        aBlock.hidden = true;
+        qBlock.hidden = false;
+        no.hidden = false;
+        no.classList.remove("loose");
+        no.style.left = "";
+        no.style.top = "";
+        if (ghost) { ghost.remove(); ghost = null; }
+        dodges = 0;
+        yes.style.removeProperty("--grow");
+        hint.textContent = cfg.startHint;
+      }
+    };
+  }
+
+  var loveQ = question({
+    yes: "yes", no: "no", hint: "hint", choices: "choices",
+    question: "question-block", answer: "answer", answerTitle: "answer-title",
+    startHint: "Be honest.",
+    lines: [
+      "Are you sure?",
+      "Think again, my love.",
+      "That button looks a little shy.",
+      "Okay, that one is only for show.",
+      "Just press Yes, jaan."
+    ]
+  });
+
+  var marryQ = question({
+    yes: "yes2", no: "no2", hint: "hint2", choices: "marry-choices",
+    question: "marry-question", answer: "marry-answer", answerTitle: "marry-answer-title",
+    startHint: "Take a deep breath.",
+    lines: [
+      "Are you sure?",
+      "I can wait all day.",
+      "This button is playing hard to get.",
+      "Still looking for it? Try the other one.",
+      "Just press Yes, jaan."
+    ]
+  });
+
+  document.getElementById("replay").addEventListener("click", function () {
+    loveQ.reset();
+    location.hash = "wish";
+  });
+
+  document.getElementById("restart").addEventListener("click", function () {
+    loveQ.reset();
+    marryQ.reset();
+    location.hash = "wish";
+  });
+})();
+</script>
+</body>
+</html>
